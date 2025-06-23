@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agencia de Viajes</title>
+    <link rel="stylesheet" href="css/index_style.css" />
+    <link rel="stylesheet" href="css/vista_inicio_cliente.css" />
+  </head>
+
+  <body class="inicio_cliente">
+    <header class="contenedor-titulo">
+      <h1 class="titulo-principal">Agencia de Viajes</h1>
+    </header>
+    <main class="inicio_cliente">
+      <div class="cuadro-login">
+        <h2>Bienvenido</h2>
+        <a href="./cliente_login.html">
+          <button class="boton-login">Iniciar Sesión</button>
+        </a>
+        <a href="./registro_cliente.html">
+          <button class="boton-register">Registrarse</button>
+        </a>
+      </div>
+    </main>
+    <script type="module">
+      import { authenticateEmployee } from "./js/auth.js";
+
+      document.querySelector("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const id = document.getElementById("ID_empleado").value;
+        const password = document.getElementById("Codigo_seguridad").value;
+
+        if (await authenticateEmployee(id, password)) {
+          window.location.href = "menu_emp.html";
+        } else {
+          alert("Credenciales inválidas");
+        }
+      });
+    </script>
+  </body>
+</html>

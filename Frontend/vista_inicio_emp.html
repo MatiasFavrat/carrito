@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="css/index_style.css" />
+  <link rel="stylesheet" href="css/vista_inicio_emp.css">
+</head>
+
+<body class="inicio_emp">
+  <main class="inicio_emp">
+    <div class="cuadro-login">
+      <div class="cubo-central">
+        <h1 class="titulo-registro">Registro Empleados</h1>
+        <form action="">
+          <div>
+            <label for="ID_empleado">ID empleado</label>
+            <input type="password" name="ID_empleado" id="ID_empleado" placeholder="Introduzca su ID" required
+              oninvalid="this.setCustomValidity('Por favor, ingrese su ID de empleado')"
+              oninput="this.setCustomValidity('')">
+          </div>
+          <div>
+            <label for="Codigo_seguridad">Contraseña</label>
+            <input type="password" name="Codigo_seguridad" id="Codigo_seguridad" placeholder="Introduzca su contraseña"
+              required oninvalid="this.setCustomValidity('Debe ingresar su contraseña')"
+              oninput="this.setCustomValidity('')">
+          </div>
+          <button type="submit" formaction="menu_emp.html">Iniciar sesión</button>
+        </form>
+      </div>
+    </div>
+  </main>
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const id = document.getElementById('ID_empleado').value;
+      const password = document.getElementById('Codigo_seguridad').value;
+
+      try {
+        const response = await fetch('http://localhost:3000/api/auth/employee/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ id, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Error al iniciar sesión');
+        }
+
+        localStorage.setItem('authToken', data.token);
+        localStorage.setItem('userData', JSON.stringify(data.user));
+        window.location.href = 'menu_emp.html';
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  </script>
+</body>
+
+</html>
